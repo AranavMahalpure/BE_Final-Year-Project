@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor File Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Brain Tumor Files</h1>
+        <form id="upload-form" method="POST" action="/upload" enctype="multipart/form-data">
+            <label>Upload Flair MRI:</label>
+            <input type="file" id="flair_file" name="flair_file" accept=".nii" required>
+            
+            <label>Upload T1ce MRI:</label>
+            <input type="file" id="t1ce_file" name="t1ce_file" accept=".nii" required>
+
+            <button type="submit">Upload Files</button>
+        </form>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('upload-form');
+        const messageDiv = document.getElementById('message');
+
+        form.addEventListener('submit', (event) => {
+            const flairFile = document.getElementById('flair_file').files[0];
+            const t1ceFile = document.getElementById('t1ce_file').files[0];
+
+            if (!flairFile || !t1ceFile) {
+                event.preventDefault();
+                messageDiv.innerHTML = '<span style="color: red;">Please select both Flair and T1ce files.</span>';
+            }
+        });
+    </script>
+</body>
+</html>
