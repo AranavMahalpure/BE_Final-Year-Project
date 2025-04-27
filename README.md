@@ -28,71 +28,51 @@ This project aims to detect and segment brain tumors from MRI scans using deep l
 - **Optimizer:** Adam
 - **Metrics:** Accuracy, IoU, Dice Score
 
-## 📁 Folder Structure
+## 📁 Project Structure
 
-```
-brain-tumor-detection/
-│
-├── backend/
-│   ├── app.py                  # Flask/Django server
-│   ├── model/                  # Saved model files (.h5, .pkl)
-│   ├── utils/                  # Preprocessing & postprocessing scripts
-│
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── components/         # React Components
-│   │   ├── App.js              # Main entry point
-│
-├── dataset/                    # BRATS dataset (or path to download)
-├── Dockerfile
-├── requirements.txt
-└── README.md
-```
-
+```plaintext
+├── app.py                # Main Flask application
+├── uploads/              # Folder to store uploaded MRI files
+├── templates/
+│   ├── index.html        # Upload page
+│   └── result.html       # Prediction result page
+├── tests/
+│   └── test_app.py       # Pytest test cases
+├── 3D_MRI_Brain_tumor_segmentation(35).h5  # Pre-trained Keras model
+├── README.md             # This file
+├── requirements.txt      # Python dependencies
 ## 🚀 How to Run
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/brain-tumor-detection.git
-cd brain-tumor-detection
+git clone https://github.com/AranavMahalpure/BE_Final-Year-Project.git
+cd BE_Final-Year-Project
 ```
 
 ### 2. Set up and activate virtual environment
 
 ```bash
-python -m venv venv
-source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Run the backend
+### 3. Run the project
 
 ```bash
-cd backend
+cd BE_Final-Year-Project
 python app.py
 ```
 
-### 4. Run the frontend
+### 4. Run the test cases
 
 ```bash
-cd frontend
-npm install
-npm start
+cd BE_Final-Year-Project
+python -m pytest --maxfail=1 --disable-warnings -v
 ```
-
-### 5. Docker Deployment (Optional)
-
-```bash
-docker build -t brain-tumor-app .
-docker run -p 5000:5000 brain-tumor-app
-```
-
 ## 📊 Sample Output
 
 - Input: Brain MRI Scan
-- Output: Tumor Mask + Tumor Type Prediction
+- Output: Tumor Level Prediction
 
 ## 📚 Dataset
 
