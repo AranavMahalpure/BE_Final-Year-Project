@@ -16,6 +16,27 @@ SEGMENT_CLASSES = {
     3: 'ENHANCING'  # original 4 -> converted into 3 later
 }
 
+# Priority labels for low grade and high grade
+LOW_GRADE_CLASSES = ['EDEMA']
+HIGH_GRADE_CLASSES = ['NECROTIC/CORE', 'ENHANCING']
+def determine_tumor_grade(serialized_prediction):
+    # Convert the serialized prediction back into a list of labels
+    prediction_data = json.loads(serialized_prediction)  # Deserialize the prediction
+    
+    # Flatten the prediction data to make it easier to check each value
+    flattened_data = [item for sublist in prediction_data for item in sublist]
+    
+    # Check for high grade tumor (NECROTIC/CORE or ENHANCING)
+    if any(label in HIGH_GRADE_CLASSES for label in flattened_data):
+        return "high grade"
+    
+    # Check for low grade tumor (NOT tumor, EDEMA)
+    elif any(label in LOW_GRADE_CLASSES for label in flattened_data):
+        return "low grade"
+    
+    # If neither is detected
+    return "Tumor Not Detected" 
+
 def convert_to_serializable(prediction):
     """
     Convert the mapped prediction array to a JSON-serializable format.
@@ -82,6 +103,7 @@ def visualize_prediction(prediction):
 def index():
     return render_template('index.html')
 
+
 @app.route('/upload', methods=['POST'])
 def upload_files():
     if 'flair_file' not in request.files or 't1ce_file' not in request.files:
@@ -109,11 +131,11 @@ def upload_files():
     mapped_prediction = np.vectorize(SEGMENT_CLASSES.get)(prediction)
     # Convert mapped prediction to a JSON-serializable format
     serializable_prediction = convert_to_serializable(mapped_prediction)
-
-    return jsonify({
-        'message': 'Files uploaded and processed successfully!',
-        'segmentation': serializable_prediction
-    })
+    # Determine tumor grade
+    print(serializable_prediction)
+    tumor_grade = determine_tumor_grade(serializable_prediction)
+        # Render the result.html template with tumor grade
+    return render_template('result.html', tumor_grade=tumor_grade)
 
 if __name__ == '__main__':
     app.run(debug=True)
